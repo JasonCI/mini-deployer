@@ -53,19 +53,19 @@ export interface SenderConfig {
 export interface DeployConfig {
     isProd:boolean
     wx?:{
-        "name" : "",
-        "appId": "",
-        "privateKeyPath": "",
-        version:'',
-        projectPath:''
+        name : string,
+        appId: string,
+        privateKeyPath: string,
+        version:string,
+        projectPath:string
     },
     alipay?:{
-        "name" : "",
-        "appId": "",
-        "toolId": "",
-        "privateKey": "",
-        version:'',
-        projectPath:''
+        name : string,
+        appId: string,
+        toolId: string,
+        privateKey: string,
+        version:string,
+        projectPath:string
     }
 }
 
