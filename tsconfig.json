@@ -1,0 +1,26 @@
+{
+  "include": [
+    "src/**/*/*.ts",
+    "src/**/*.ts",
+    "src/*.ts",
+    "test/*.*.ts",
+    "test/*/*.*.ts"
+  ],
+  "output": "./dist/",
+  "paths": {
+    "src/*": [
+      "src/*",
+      "src/*/*"
+    ]
+  },
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationDir": "dist",
+    "target": "es5",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "useUnknownInCatchVariables": false
+  }
+}
