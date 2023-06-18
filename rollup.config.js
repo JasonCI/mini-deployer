@@ -6,14 +6,21 @@ import commonjs from "rollup-plugin-commonjs";
 import terser from '@rollup/plugin-terser';
 export default {
     input: './src/index.ts', // 入口文件
-    output: {
-        format: 'esm', // 打包为esm格式
-        name: 'mini-deployer',
-        exports: "named",
-        dir: './dist',
-        preserveModules: true, // 保留模块结构
-        preserveModulesRoot: 'src', // 将保留的模块放在根级别的此路径下
-    },
+    output: [
+        {
+            format: 'esm', // 打包为esm格式
+            name: 'mini-deployer',
+            exports: "named",
+            dir: './dist',
+            preserveModules: true, // 保留模块结构
+            preserveModulesRoot: 'src', // 将保留的模块放在根级别的此路径下
+        },
+        {
+            file: './dist/index.cjs',
+            format: 'cjs',
+            exports: 'auto'
+        },
+    ],
     plugins: [
         resolve(),
         externals({
