@@ -38,3 +38,7 @@ export const getGitCommit = async (dirPath:string) => {
   })
   return commits
 }
+
+export const GitTools = {
+  getGitCommit,getGitBranch,getGitHash,md5
+}

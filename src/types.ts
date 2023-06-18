@@ -68,5 +68,10 @@ export interface DeployConfig {
         projectPath:string
     }
 }
+export interface MsgSender {
 
+}
+export interface MiniDeployClass {
+
+}
 export type Env = 'prod'|'dev'
