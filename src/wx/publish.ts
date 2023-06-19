@@ -1,11 +1,11 @@
 import ci from "miniprogram-ci";
-import {DeployConfig} from "../types";
-import {getGitCommit} from "../utils/git";
-import {join} from "path";
+import { DeployConfig } from "../types";
+import { getGitCommit } from "../utils/git";
+import { join } from "path";
 
 export default class MiniDeploy {
-    project:ci.Project
-    config :DeployConfig
+    project: ci.Project
+    config: DeployConfig
     setting = {
         es6: false, // "es6 转 es5"
         es7: false, // "增强编译"
@@ -13,18 +13,22 @@ export default class MiniDeploy {
         codeProtect: false, // "代码保护"
         autoPrefixWXSS: true, // "样式自动补全"
     }
-    compiledResultPath = join(__dirname, 'compiledResult.zip')
-    sourceMapSavePath = join(__dirname, 'source-map.zip')
-    qrcodeOutputDest = join(__dirname, 'qrcode.jpg')
-    constructor(config:DeployConfig) {
-        const {isProd,wx} = config
-        if(!wx){
+    compiledResultPath = ''
+    sourceMapSavePath = ''
+    qrcodeOutputDest = ''
+
+    constructor(config: DeployConfig) {
+        const { isProd, wx, compiledResultPath, sourceMapSavePath, qrcodeOutputDest } = config
+        if (!wx) {
             throw new Error('请配置微信小程序的相关信息')
         }
+        this.compiledResultPath = compiledResultPath;
+        this.sourceMapSavePath = sourceMapSavePath;
+        this.qrcodeOutputDest = qrcodeOutputDest;
         this.config = config
-        const {name,appId,privateKeyPath,version,projectPath} = wx
+        const { name, appId, privateKeyPath, version, projectPath } = wx
         this.project = new ci.Project({
-            appid:appId,
+            appid: appId,
             type: 'miniProgram',
             projectPath,
             privateKeyPath,
@@ -32,9 +36,9 @@ export default class MiniDeploy {
         })
     }
 
-   async upload(){
-        const {project} = this
-        const {version} = this.config?.wx!
+    async upload() {
+        const { project } = this
+        const { version } = this.config?.wx!
         const commits = await getGitCommit('./')
         const desc = commits[0]
         await ci.upload({
@@ -46,9 +50,9 @@ export default class MiniDeploy {
         })
     }
 
-    async genCode(){
-        const {project,compiledResultPath,sourceMapSavePath} = this
-        const {version} = this.config?.wx!
+    async genCode() {
+        const { project, compiledResultPath, sourceMapSavePath } = this
+        const { version } = this.config?.wx!
         const commits = await getGitCommit('./')
         const desc = commits[0]
         await ci.getCompiledResult(
@@ -68,9 +72,9 @@ export default class MiniDeploy {
         })
     }
 
-    async genQrcode(){
-        const {project,qrcodeOutputDest} = this
-        const {version} = this.config?.wx!
+    async genQrcode() {
+        const { project, qrcodeOutputDest } = this
+        const { version } = this.config?.wx!
         const commits = await getGitCommit('./')
         const desc = commits[0]
         await ci.preview({

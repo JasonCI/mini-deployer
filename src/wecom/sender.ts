@@ -92,7 +92,7 @@ async function sendMarkdownMsg(data:MarkdownMessageData,content:string,accessKey
 }
 
 async function sendNewsNotice(data:NewsNoticeMessageData,accessKey:string) {
-    const {name, version, buildId, compiledResultPath, sourceMapSavePath, qrcodeOutputDest,branch } = data
+    const {name, version,appId, buildId, compiledResultPath, sourceMapSavePath, qrcodeOutputDest,branch } = data
     const sourceMediaId = sourceMapSavePath ? await getMediaId(sourceMapSavePath,accessKey):''
     const codeMediaId = compiledResultPath ? await getMediaId(compiledResultPath,accessKey):''
     const qrCodeMediaId = qrcodeOutputDest ? await getMediaId(qrcodeOutputDest,accessKey):''
@@ -146,7 +146,7 @@ async function sendNewsNotice(data:NewsNoticeMessageData,accessKey:string) {
                 ],
                 card_action: {
                     type: 2,
-                    appid: 'wxeb196f6eab9577ed',
+                    appid: appId,
                 },
             },
         }

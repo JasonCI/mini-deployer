@@ -21,6 +21,6 @@
     "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
   }
 }
