@@ -34,6 +34,7 @@ export interface NewsNoticeMessageData {
     qrcodeOutputDest: string
     branch: string
     appId: string
+    url: string
     gitCommit: string[]
 }
 

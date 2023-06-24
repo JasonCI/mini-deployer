@@ -1,5 +1,6 @@
 import execa from 'execa';
 import * as crypto from "crypto";
+
 const gitlog = require("gitlog").default;
 
 // 字符串生成md5
@@ -24,16 +25,16 @@ type Commit = {
     abbrevHash: string, subject: string, authorName: string
 }
 // 获取Git提交记录
-export const getGitCommit = async (dirPath: string) => {
+export const getGitCommit = async (dirPath: string, number: number = 3) => {
     // Git 提交信息
     const aCommits: Commit[] = gitlog({
         repo: dirPath,
-        number: 3,
-        fields: ['abbrevHash', 'subject', 'authorName'],
-        execOptions: { maxBuffer: 1000 * 1024 },
+        number,
+        fields: ['subject', 'authorName'],
+        execOptions: {maxBuffer: 1000 * 1024},
     })
-    const commits = aCommits.map(({ abbrevHash, subject, authorName }: Commit) => {
-        return `${subject}(${abbrevHash}) - ${authorName}`
+    const commits = aCommits.map(({subject, authorName}: Commit) => {
+        return `${subject} - ${authorName}`
     })
     return commits
 }
