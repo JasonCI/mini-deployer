@@ -1,7 +1,7 @@
 import axios from 'axios'
 import fs from 'fs-extra'
-import {md5} from "../utils/git";
-import {Env, MarkdownMessageData, NewsNoticeMessageData, SenderConfig} from "../types";
+import { md5 } from "../utils/git";
+import { Env, MarkdownMessageData, NewsNoticeMessageData, SenderConfig } from "../types";
 
 const HOOK_URL = 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send'
 const request = axios.create({
@@ -11,10 +11,10 @@ const request = axios.create({
 })
 
 export default class MsgSender {
-    config: SenderConfig = {wecom: {prodKey: '', devKey: ''}}
+    config: SenderConfig = { wecom: { prodKey: '', devKey: '' } }
 
     constructor(cfg: SenderConfig) {
-        const {wecom: {prodKey = "", devKey = ""}} = cfg
+        const { wecom: { prodKey = "", devKey = "" } } = cfg
         if (!prodKey || !devKey) {
             throw new Error('请配置企业微信机器人的key')
         }
@@ -56,7 +56,7 @@ async function sendImgMsg(imgPath: string, accessKey: string) {
                 md5: imgMd5, // 图片内容（base64编码前）的md5值
             },
         })
-        const {errcode} = res.data
+        const { errcode } = res.data
         if (errcode === 0) {
             console.log(`发送企业微信二维码图片成功`, res.data)
         }
@@ -69,7 +69,7 @@ async function sendImgMsg(imgPath: string, accessKey: string) {
 
 // 发送markdown信息
 async function sendMarkdownMsg(data: MarkdownMessageData, content: string, accessKey: string) {
-    const {name = '', version = '', gitHash = '', buildId = '', branch = '', gitCommit = []} = data
+    const { name = '', version = '', gitHash = '', buildId = '', branch = '', gitCommit = [] } = data
     try {
         let commitText = ''
         if (Array.isArray(gitCommit)) {
@@ -88,7 +88,7 @@ async function sendMarkdownMsg(data: MarkdownMessageData, content: string, acces
                     提交摘要：<font color=\"comment\">${commitText}</font>`,
             },
         })
-        const {errcode} = res.data
+        const { errcode } = res.data
         if (errcode === 0) {
             console.log(`发送企业微信成功`)
         }
@@ -98,7 +98,18 @@ async function sendMarkdownMsg(data: MarkdownMessageData, content: string, acces
 }
 
 async function sendNewsNotice(data: NewsNoticeMessageData, accessKey: string) {
-    const {name, version, appId, buildId, compiledResultPath, sourceMapSavePath, qrcodeOutputDest, branch, url} = data
+    const {
+        name,
+        version,
+        appId,
+        buildId,
+        compiledResultPath,
+        sourceMapSavePath,
+        qrcodeOutputDest,
+        branch,
+        url,
+        cardImage
+    } = data
     const sourceMediaId = sourceMapSavePath ? await getMediaId(sourceMapSavePath, accessKey) : ''
     const codeMediaId = compiledResultPath ? await getMediaId(compiledResultPath, accessKey) : ''
     const qrCodeMediaId = qrcodeOutputDest ? await getMediaId(qrcodeOutputDest, accessKey) : ''
@@ -123,7 +134,7 @@ async function sendNewsNotice(data: NewsNoticeMessageData, accessKey: string) {
                     desc: '',
                 },
                 card_image: {
-                    url: 'https://wework.qpic.cn/wwpic/354393_4zpkKXd7SrGMvfg_1629280616/0',
+                    url: cardImage || 'https://wework.qpic.cn/wwpic/354393_4zpkKXd7SrGMvfg_1629280616/0',
                     aspect_ratio: 2.25,
                 },
                 vertical_content_list: [
@@ -182,7 +193,7 @@ async function sendNewsNotice(data: NewsNoticeMessageData, accessKey: string) {
             })
         }
         const res = await request.post(`${HOOK_URL}?key=${accessKey}`, json)
-        const {errcode, errmsg} = res.data
+        const { errcode, errmsg } = res.data
         if (errcode === 0) {
             console.log(`发送企业微信成功`)
             return
@@ -216,7 +227,7 @@ const getMediaId = async (filePath: string, accessKey: string) => {
     if (!filePath) return null
     try {
         let result = await uploadFile(filePath, accessKey)
-        const {errcode, media_id} = result
+        const { errcode, media_id } = result
         if (errcode === 0 && media_id) {
             return media_id
         }
