@@ -1,6 +1,6 @@
 {
   "name": "mini-deployer",
-  "version": "1.1.16",
+  "version": "1.1.17",
   "description": "小程序部署发布助手",
   "main": "dist/mini-deployer.umd.js",
   "module": "dist/mini-deployer.esm.js",
